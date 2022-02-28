@@ -16,6 +16,9 @@ provider "azurerm" {
 resource "azurerm_resource_group" "rg" {
   name     = "rg-azlearn-apps-prod-01"
   location = "South Central US"
+  tags = {
+    "created_by" = "terraform_cloud"
+  }
 }
 
 resource "azurerm_app_service_plan" "plan" {
