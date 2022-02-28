@@ -13,8 +13,12 @@ provider "azurerm" {
   }
 }
 
+variable "env" {
+  default = "prod"
+}
+
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-azlearn-apps-prod-01"
+  name     = "rg-azlearn-apps-${var.env}-01"
   location = "South Central US"
   tags = {
     "created_by" = "terraform_cloud"
@@ -22,7 +26,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_app_service_plan" "plan" {
-  name                = "plan-azlearn-prod-01"
+  name                = "plan-azlearn-${var.env}-01"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "Linux"
@@ -40,7 +44,7 @@ resource "azurerm_app_service_plan" "plan" {
 }
 
 resource "azurerm_app_service" "app" {
-  name                = "app-azlearn-prod-01"
+  name                = "app-azlearn-${var.env}-01"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   app_service_plan_id = azurerm_app_service_plan.plan.id
