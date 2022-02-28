@@ -36,4 +36,23 @@ resource "azurerm_app_service_plan" "plan" {
   tags = {
     "created_by" = "terraform_cloud"
   }
-} 
+
+}
+
+resource "azurerm_app_service" "app-azlearn-api-prod-01" {
+  name                = "app-azlearn-api-prod-01"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  app_service_plan_id = azurerm_app_service_plan.plan.id
+  https_only          = true
+
+  site_config {
+    dotnet_framework_version = "v6.0"
+    remote_debugging_enabled = true
+    remote_debugging_version = "VS2019"
+  }
+
+  tags = {
+    "created_by" = "terraform_cloud"
+  }
+}
