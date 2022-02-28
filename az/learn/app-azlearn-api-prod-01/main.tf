@@ -14,6 +14,6 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-learn-apps-prod-01"
+  name     = "rg-azlearn-apps-prod-01"
   location = "South Central US"
 }
