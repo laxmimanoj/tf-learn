@@ -17,9 +17,13 @@ variable "env" {
   default = "prod"
 }
 
+variable "location" {
+  default = "South Central US"
+}
+
 resource "azurerm_resource_group" "rg" {
   name     = "rg-azlearn-apps-${var.env}-01"
-  location = "South Central US"
+  location = var.location
   tags = {
     "created_by" = "terraform_cloud"
   }
@@ -33,8 +37,8 @@ resource "azurerm_app_service_plan" "plan" {
   reserved            = true
 
   sku {
-    tier = "Free"
-    size = "F1"
+    tier = "Shared"
+    size = "B1"
   }
 
   tags = {
