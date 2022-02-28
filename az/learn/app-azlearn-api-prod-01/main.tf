@@ -7,10 +7,6 @@ terraform {
   }
 }
 
-provider "azurerm" {
-  # Configuration options
-}
-
 resource "azurerm_resource_group" "rg" {
   name     = "rg-learn-apps-prod-01"
   location = "South Central US"
