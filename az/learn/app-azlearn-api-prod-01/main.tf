@@ -39,7 +39,7 @@ resource "azurerm_app_service_plan" "plan" {
 
 }
 
-resource "azurerm_app_service" "app-azlearn-api-prod-01" {
+resource "azurerm_app_service" "app" {
   name                = "app-azlearn-api-prod-01"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
