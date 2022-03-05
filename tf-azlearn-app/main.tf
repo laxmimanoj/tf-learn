@@ -79,9 +79,9 @@ resource "azurerm_app_service" "app" {
   https_only          = true
 
   site_config {
-    dotnet_framework_version = var.dotnet_framework_version
+    dotnet_framework_version = "${var.dotnet_framework_version}"
     remote_debugging_enabled = true
-    remote_debugging_version = var.remote_debugging_version
+    remote_debugging_version = "${var.remote_debugging_version}"
   }
 
   tags = var.tags
