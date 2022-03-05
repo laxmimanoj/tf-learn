@@ -14,23 +14,42 @@ provider "azurerm" {
 }
 
 variable "env" {
-  default = "prod"
+  default = "dev"
 }
 
 variable "location" {
   default = "South Central US"
 }
 
-resource "azurerm_resource_group" "rg" {
-  name     = "rg-azlearn-apps-${var.env}-01"
-  location = var.location
-  tags = {
-    "created_by" = "terraform_cloud"
+variable "workload" {
+  default = "azlearn"
+}
+
+variable "dotnet_framework_version" {
+  default = "v6.0"
+}
+
+variable "remote_debugging_version" {
+  default = "VS2019"
+}
+
+variable "tags" {
+  type = map(string)
+
+  default = {
+    created_by = "terraform_cloud"
+    workload   = "azlearn"
   }
 }
 
+resource "azurerm_resource_group" "rg" {
+  name     = "rg-${var.workload}-app-${var.env}-01"
+  location = var.location
+  tags     = var.tags
+}
+
 resource "azurerm_app_service_plan" "plan" {
-  name                = "plan-azlearn-${var.env}-01"
+  name                = "plan-${var.workload}-${var.env}-01"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "Windows"
@@ -41,26 +60,21 @@ resource "azurerm_app_service_plan" "plan" {
     size = "B1"
   }
 
-  tags = {
-    "created_by" = "terraform_cloud"
-  }
-
+  tags = var.tags
 }
 
 resource "azurerm_app_service" "app" {
-  name                = "app-azlearn-${var.env}-01"
+  name                = "app-${var.workload}-${var.env}-01"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   app_service_plan_id = azurerm_app_service_plan.plan.id
   https_only          = true
 
   site_config {
-    dotnet_framework_version = "v6.0"
+    dotnet_framework_version = var.dotnet_framework_version
     remote_debugging_enabled = true
-    remote_debugging_version = "VS2019"
+    remote_debugging_version = var.remote_debugging_version
   }
 
-  tags = {
-    "created_by" = "terraform_cloud"
-  }
+  tags = var.tags
 }
