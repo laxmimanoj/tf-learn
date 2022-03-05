@@ -33,6 +33,14 @@ variable "remote_debugging_version" {
   default = "VS2019"
 }
 
+variable "app_sku_tier" {
+  default = "Shared"
+}
+
+variable "app_sku_size" {
+  default = "B1"
+}
+
 variable "tags" {
   type = map(string)
 
@@ -56,8 +64,8 @@ resource "azurerm_app_service_plan" "plan" {
   reserved            = false
 
   sku {
-    tier = "Shared"
-    size = "B1"
+    tier = var.app_sku_tier
+    size = var.app_sku_size
   }
 
   tags = var.tags
