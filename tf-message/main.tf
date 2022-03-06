@@ -62,6 +62,7 @@ resource "azurerm_servicebus_namespace" "sb" {
 }
 
 resource "azurerm_servicebus_queue" "queue" {
-  name         = "sbq-${var.app}-${var.env}-01"
-  namespace_id = azurerm_servicebus_namespace.sb.id
+  name                = "sbq-${var.app}-${var.env}-01"
+  namespace_id        = azurerm_servicebus_namespace.sb.id
+  enable_partitioning = true
 }
