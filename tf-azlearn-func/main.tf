@@ -62,5 +62,6 @@ resource "azurerm_storage_account" "st" {
   location                 = azurerm_resource_group.rg.location
   account_tier             = var.st_type
   account_replication_type = var.st_replication_type
+  min_tls_version          = "TLS1_2"
   tags                     = var.tags
 }
