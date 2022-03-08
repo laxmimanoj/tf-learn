@@ -91,6 +91,14 @@ resource "azurerm_app_service_plan" "plan" {
   tags = var.tags
 }
 
+resource "azurerm_application_insights" "appi" {
+  name                = "appi-${var.workload_name}-${var.workload_type}-${var.env}-${var.location_tag}-01"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  application_type    = "web"
+  tags                = var.tags
+}
+
 resource "azurerm_function_app" "func" {
   name                       = "func-${var.workload_name}-${var.workload_type}-${var.env}-${var.location_tag}-01"
   location                   = azurerm_resource_group.rg.location
@@ -100,8 +108,14 @@ resource "azurerm_function_app" "func" {
   storage_account_access_key = azurerm_storage_account.st.primary_access_key
   https_only                 = true
 
+  app_settings = {
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.appi.instrumentation_key
+  }
+
   site_config {
     dotnet_framework_version = var.dotnet_framework_version
+    always_on                = true
+    http2_enabled            = true
   }
 
   tags = var.tags
