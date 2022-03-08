@@ -53,10 +53,6 @@ variable "dotnet_framework_version" {
   default = "v6.0"
 }
 
-variable "remote_debugging_version" {
-  default = "VS2019"
-}
-
 variable "tags" {
   type = map(string)
 
@@ -103,10 +99,10 @@ resource "azurerm_function_app" "func" {
   storage_account_name       = azurerm_storage_account.st.name
   storage_account_access_key = azurerm_storage_account.st.primary_access_key
   https_only                 = true
+
   site_config {
     dotnet_framework_version = var.dotnet_framework_version
-    remote_debugging_enabled = true
-    remote_debugging_version = var.remote_debugging_version
   }
+
   tags = var.tags
 }
