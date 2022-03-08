@@ -41,6 +41,14 @@ variable "st_replication_type" {
   default = "LRS"
 }
 
+variable "app_sku_tier" {
+  default = "Shared"
+}
+
+variable "app_sku_size" {
+  default = "B1"
+}
+
 variable "tags" {
   type = map(string)
 
@@ -51,17 +59,30 @@ variable "tags" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-${var.workload_name}-func-${var.env}-${var.location_tag}-01"
+  name     = "rg-${var.workload_name}-${var.workload_type}-${var.env}-${var.location_tag}-01"
   location = var.location
   tags     = var.tags
 }
 
 resource "azurerm_storage_account" "st" {
-  name                     = "st${var.workload_name}${var.env}01"
+  name                     = "st${var.workload_name}${var.env}${var.location_tag}01"
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = var.st_type
   account_replication_type = var.st_replication_type
   min_tls_version          = "TLS1_2"
   tags                     = var.tags
+}
+
+resource "azurerm_app_service_plan" "plan" {
+  name                = "plan-${var.workload_name}-${var.workload_type}-${var.env}-${var.location_tag}-01"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  kind                = "FunctionApp"
+
+  sku {
+    tier = var.app_sku_tier
+    size = var.app_sku_size
+  }
+  tags=var.tags
 }

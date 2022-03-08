@@ -25,8 +25,12 @@ variable "location_tag" {
   default = "scus"
 }
 
-variable "workload" {
+variable "workload_name" {
   default = "azlearn"
+}
+
+variable "workload_type" {
+  default = "app"
 }
 
 variable "dotnet_framework_version" {
@@ -55,13 +59,13 @@ variable "tags" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-${var.workload}-app-${var.env}-${var.location_tag}-01"
+  name     = "rg-${var.workload_name}-${var.workload_type}-${var.env}-${var.location_tag}-01"
   location = var.location
   tags     = var.tags
 }
 
 resource "azurerm_app_service_plan" "plan" {
-  name                = "plan-${var.workload}-${var.env}-${var.location_tag}-01"
+  name                = "plan-${var.workload_name}-${var.workload_type}-${var.env}-${var.location_tag}-01"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "Windows"
@@ -76,7 +80,7 @@ resource "azurerm_app_service_plan" "plan" {
 }
 
 resource "azurerm_app_service" "app" {
-  name                = "app-${var.workload}-${var.env}-${var.location_tag}-01"
+  name                = "app-${var.workload_name}-${var.workload_type}-${var.env}-${var.location_tag}-01"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   app_service_plan_id = azurerm_app_service_plan.plan.id
