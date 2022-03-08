@@ -51,7 +51,7 @@ variable "tags" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-${var.workload_name}-app-${var.env}-${var.location_tag}-01"
+  name     = "rg-${var.workload_name}-func-${var.env}-${var.location_tag}-01"
   location = var.location
   tags     = var.tags
 }
