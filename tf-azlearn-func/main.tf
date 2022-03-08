@@ -100,8 +100,8 @@ resource "azurerm_function_app" "func" {
   location                   = azurerm_resource_group.rg.location
   resource_group_name        = azurerm_resource_group.rg.name
   app_service_plan_id        = azurerm_app_service_plan.plan.id
-  storage_account_name       = azurerm_storage_account.plan.name
-  storage_account_access_key = azurerm_storage_account.plan.primary_access_key
+  storage_account_name       = azurerm_storage_account.st.name
+  storage_account_access_key = azurerm_storage_account.st.primary_access_key
   https_only                 = true
   site_config {
     dotnet_framework_version = var.dotnet_framework_version
