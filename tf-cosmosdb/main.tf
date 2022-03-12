@@ -47,3 +47,22 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
   tags     = var.tags
 }
+
+resource "azurerm_cosmosdb_account" "db" {
+  name                = "cosmos-${var.workload_name}-${var.env}-${var.location_tag}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  offer_type          = "Standard"
+  enable_free_tier    = true
+
+  consistency_policy {
+    consistency_level = "Session"
+  }
+
+  geo_location {
+    location          = azurerm_resource_group.rg.location
+    failover_priority = 0
+  }
+
+  tags = var.tags
+}
