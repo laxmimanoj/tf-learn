@@ -30,7 +30,7 @@ variable "workload_name" {
 }
 
 variable "workload_type" {
-  default = "cosmosdb"
+  default = "db"
 }
 
 variable "tags" {
